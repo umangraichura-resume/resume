@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Umang Raichura — Cyber Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <style>
+    /* ==================== RESET & ROOT ==================== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    a { text-decoration: none; color: inherit; }
+    li { list-style: none; }
+    img, ion-icon, a, button, time, span { display: block; }
+    button { font: inherit; background: none; border: none; text-align: left; cursor: pointer; }
+    input, textarea { display: block; width: 100%; background: none; font: inherit; }
+
+    :root {
+      --cyan:        hsl(177, 100%, 50%);
+      --cyan-dim:    hsla(177, 100%, 50%, 0.65);
+      --cyan-faint:  hsla(177, 100%, 50%, 0.08);
+      --cyan-border: hsla(177, 100%, 50%, 0.22);
+      --magenta:     hsl(310, 100%, 55%);
+      --bg-deep:     hsl(222, 25%, 4%);
+      --bg-1:        hsl(222, 20%, 7%);
+      --bg-2:        hsl(222, 18%, 9%);
+      --bg-3:        hsl(222, 15%, 13%);
+      --text-main:   hsl(180, 10%, 88%);
+      --text-muted:  hsl(180, 5%, 60%);
+      --danger:      hsl(0, 80%, 55%);
+
+      --glow:        0 0 8px hsla(177,100%,50%,.7), 0 0 24px hsla(177,100%,50%,.3);
+      --glow-soft:   0 0 4px hsla(177,100%,50%,.4), 0 0 12px hsla(177,100%,50%,.15);
+      --shadow:      0 8px 32px hsla(0,0%,0%,.4);
+
+      --ff-mono:    'Share Tech Mono', monospace;
+      --ff-display: 'Orbitron', sans-serif;
+      --ff-body:    'Rajdhani', sans-serif;
+
+      --t1: 0.25s ease;
+      --t2: 0.5s ease-in-out;
+    }
+
+    ::selection { background: var(--cyan); color: var(--bg-deep); }
+    :focus { outline: 1px solid var(--cyan); outline-offset: 2px; }
+
+    html { font-family: var(--ff-body); scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-deep);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Scanlines */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        hsla(177,100%,50%,.012) 3px, hsla(177,100%,50%,.012) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Ambient corner glows */
+    body::after {
+      content: "";
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse at 0% 0%, hsla(177,100%,50%,.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 100% 100%, hsla(310,100%,55%,.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ==================== TYPOGRAPHY ==================== */
+    .h2, .h3, .h4, .h5 {
+      font-family: var(--ff-display);
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .h2 { font-size: clamp(18px, 4vw, 26px); }
+    .h3 { font-size: clamp(14px, 3vw, 18px); }
+    .h4 { font-size: clamp(13px, 2.5vw, 16px); }
+    .h5 { font-size: 13px; font-weight: 500; }
+
+    /* ==================== LAYOUT ==================== */
+    main {
+      margin: 0 auto;
+      padding: 20px 16px 80px;
+      max-width: 1200px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (min-width: 1024px) {
+      main {
+        display: flex;
+        align-items: flex-start;
+        gap: 24px;
+        padding: 40px 32px 60px;
+      }
+    }
+
+    /* ==================== CARDS / PANELS ==================== */
+    .panel {
+      background: var(--bg-1);
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    /* Corner brackets */
+    .panel::before, .panel::after {
+      content: "";
+      position: absolute;
+      width: 14px; height: 14px;
+      border-color: var(--cyan);
+      border-style: solid;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .panel::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .panel::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+    .separator {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, var(--cyan), transparent);
+      margin: 18px 0;
+      opacity: .3;
+    }
+
+    /* ==================== SIDEBAR ==================== */
+    .sidebar {
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 1024px) {
+      .sidebar {
+        position: sticky;
+        top: 32px;
+        width: 280px;
+        flex-shrink: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    .sidebar-info {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    @media (min-width: 1024px) {
+      .sidebar-info { flex-direction: column; text-align: center; }
+      .sidebar-info .info-content { text-align: center; }
+    }
+
+    /* ── CYBER AVATAR ── */
+    .avatar-wrap {
+      position: relative;
+      width: 110px; height: 110px;
+      flex-shrink: 0;
+    }
+    @media (min-width: 1024px) { .avatar-wrap { width: 160px; height: 160px; } }
+
+    /* Spinning outer ring */
+    .avatar-ring {
+      position: absolute; inset: -6px;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--cyan) 0deg 90deg,
+        transparent 90deg 180deg,
+        var(--magenta) 180deg 270deg,
+        transparent 270deg 360deg
+      );
+      animation: ring-spin 4s linear infinite;
+      z-index: 0;
+    }
+    @keyframes ring-spin { to { transform: rotate(360deg); } }
+
+    /* Ring mask so only border shows */
+    .avatar-ring::after {
+      content: "";
+      position: absolute; inset: 4px;
+      border-radius: 50%;
+      background: var(--bg-1);
+    }
+
+    /* Hex clip container */
+    .avatar-box {
+      position: absolute; inset: 6px;
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 1;
+      background: var(--bg-3);
+    }
+
+    .avatar-box img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.1) contrast(1.05);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Cyan tint overlay */
+    .avatar-box::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, hsla(177,100%,50%,.12) 0%, transparent 60%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Scanlines over avatar */
+    .avatar-box::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        hsla(0,0%,0%,.18) 2px, hsla(0,0%,0%,.18) 3px
+      );
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Glitch effect on hover */
+    .avatar-wrap:hover .avatar-box img {
+      animation: glitch 0.4s steps(2) infinite;
+    }
+    @keyframes glitch {
+      0%   { clip-path: inset(10% 0 80% 0); transform: translate(-3px, 0); filter: hue-rotate(90deg) saturate(2); }
+      25%  { clip-path: inset(60% 0 10% 0); transform: translate(3px, 0);  filter: hue-rotate(180deg) saturate(2); }
+      50%  { clip-path: inset(30% 0 40% 0); transform: translate(-2px, 0); filter: hue-rotate(270deg) saturate(2); }
+      75%  { clip-path: inset(70% 0 5% 0);  transform: translate(2px, 0);  filter: hue-rotate(0deg) saturate(2); }
+      100% { clip-path: inset(0); transform: translate(0); filter: none; }
+    }
+
+    /* Corner bracket decorations */
+    .avatar-corner {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-color: var(--cyan);
+      border-style: solid;
+      z-index: 4;
+    }
+    .avatar-corner.tl { top: 2px; left: 2px; border-width: 2px 0 0 2px; }
+    .avatar-corner.tr { top: 2px; right: 2px; border-width: 2px 2px 0 0; }
+    .avatar-corner.bl { bottom: 2px; left: 2px; border-width: 0 0 2px 2px; }
+    .avatar-corner.br { bottom: 2px; right: 2px; border-width: 0 2px 2px 0; }
+
+    /* Status dot */
+    .avatar-status {
+      position: absolute;
+      bottom: 8px; right: 4px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 6px #00ff88, 0 0 14px #00ff88;
+      z-index: 5;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: .7; }
+    }
+
+    .avatar-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--bg-3), var(--bg-1));
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--ff-display);
+      font-size: 2rem;
+      color: var(--cyan);
+      text-shadow: var(--glow);
+    }
+
+    .info-content .name {
+      font-family: var(--ff-display);
+      font-size: clamp(15px, 3.5vw, 20px);
+      color: var(--cyan);
+      text-shadow: var(--glow-soft);
+      letter-spacing: .05em;
+      margin-bottom: 8px;
+    }
+
+    .info-content .title {
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      color: var(--cyan);
+      background: var(--cyan-faint);
+      border: 1px solid var(--cyan-border);
+      padding: 3px 10px;
+      border-radius: 2px;
+      letter-spacing: .08em;
+      width: max-content;
+    }
+    @media (min-width: 1024px) { .info-content .title { margin: 0 auto; } }
+
+    /* Show contacts toggle (mobile) */
+    .show-contacts-btn {
+      width: 100%;
+      margin-top: 14px;
+      padding: 8px 14px;
+      border: 1px solid var(--cyan-border);
+      border-radius: 2px;
+      color: var(--cyan);
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all var(--t1);
+    }
+    .show-contacts-btn:hover { border-color: var(--cyan); box-shadow: var(--glow-soft); }
+    .show-contacts-btn ion-icon { transition: transform var(--t1); }
+    .show-contacts-btn.open ion-icon { transform: rotate(180deg); }
+
+    @media (min-width: 1024px) { .show-contacts-btn { display: none; } }
+
+    /* Contacts */
+    .sidebar-contacts {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height var(--t2);
+    }
+    .sidebar-contacts.open { max-height: 600px; }
+    @media (min-width: 1024px) { .sidebar-contacts { max-height: none !important; } }
+
+    .contacts-list { display: grid; gap: 14px; }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .icon-box {
+      width: 36px; height: 36px;
+      border: 1px solid var(--cyan-border);
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--cyan);
+      font-size: 16px;
+      background: var(--cyan-faint);
+      box-shadow: var(--glow-soft);
+      flex-shrink: 0;
+    }
+
+    .contact-title {
+      font-family: var(--ff-mono);
+      font-size: 10px;
+      color: var(--cyan-dim);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 2px;
+    }
+
+    .contact-info a,
+    .contact-info time,
+    .contact-info address {
+      font-family: var(--ff-mono);
+      font-size: 12px;
+      color: var(--text-main);
+      font-style: normal;
+      transition: color var(--t1);
+    }
+    .contact-info a:hover { color: var(--cyan); text-shadow: var(--glow-soft); }
+
+    .social-list {
+      display: flex;
+      gap: 14px;
+      justify-content: flex-start;
+    }
+    @media (min-width: 1024px) { .social-list { justify-content: center; } }
+
+    .social-link {
+      width: 36px; height: 36px;
+      border: 1px solid var(--cyan-border);
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+      font-size: 18px;
+      transition: all var(--t1);
+    }
+    .social-link:hover { color: var(--cyan); border-color: var(--cyan); box-shadow: var(--glow-soft); }
+
+    /* ==================== MAIN CONTENT ==================== */
+    .main-content { flex: 1; min-width: 0; }
+
+    /* ==================== NAVBAR ==================== */
+    .navbar {
+      background: hsla(222,25%,4%,.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+      margin-bottom: 20px;
+      position: sticky;
+      top: 8px;
+      z-index: 100;
+      box-shadow: 0 4px 20px hsla(177,100%,50%,.08);
+    }
+
+    .navbar-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 2px 8px;
+    }
+
+    .navbar-link {
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 14px 10px;
+      transition: color var(--t1), text-shadow var(--t1);
+      position: relative;
+    }
+    .navbar-link::after {
+      content: "";
+      position: absolute;
+      bottom: 8px; left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 2px;
+      background: var(--cyan);
+      box-shadow: var(--glow);
+      transition: width var(--t1);
+    }
+    .navbar-link:hover { color: var(--cyan); }
+    .navbar-link.active { color: var(--cyan); text-shadow: var(--glow-soft); }
+    .navbar-link.active::after { width: 60%; }
+
+    /* ==================== ARTICLES ==================== */
+    article { display: none; }
+    article.active {
+      display: block;
+      animation: fadeUp .4s ease backwards;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .article-title {
+      font-family: var(--ff-display);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding-bottom: 10px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .article-title::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 36px; height: 3px;
+      background: var(--cyan);
+      box-shadow: var(--glow);
+    }
+
+    /* ==================== ABOUT ==================== */
+    .about-text {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .about-text b { color: var(--cyan); font-weight: 600; }
+
+    /* Typing cursor effect on name in about */
+    .typed-label {
+      font-family: var(--ff-mono);
+      font-size: 12px;
+      color: var(--cyan-dim);
+      letter-spacing: .08em;
+      margin-bottom: 6px;
+    }
+    .typed-label::before { content: "// "; }
+
+    /* Section sub-heading */
+    .section-label {
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      color: var(--cyan);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--cyan-border), transparent);
+    }
+
+    /* What I'm doing */
+    .service-title { margin-bottom: 20px; }
+
+    .service-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    @media (min-width: 600px) { .service-list { grid-template-columns: 1fr 1fr; } }
+
+    .service-item {
+      background: var(--bg-2);
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: border-color var(--t1), box-shadow var(--t1);
+      position: relative;
+    }
+    .service-item::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 10px; height: 10px;
+      border-top: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan);
+    }
+    .service-item:hover { border-color: var(--cyan); box-shadow: var(--glow-soft); }
+
+    .service-icon {
+      font-size: 28px;
+      color: var(--cyan);
+      text-shadow: var(--glow-soft);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .service-item-title {
+      font-family: var(--ff-display);
+      font-size: 13px;
+      letter-spacing: .06em;
+      margin-bottom: 6px;
+    }
+
+    .service-item-text {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Achievements */
+    .achievements-title { margin-bottom: 20px; }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 600px) { .achievements-grid { grid-template-columns: 1fr 1fr; } }
+
+    .achievement-card {
+      background: var(--bg-2);
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: border-color var(--t1), box-shadow var(--t1);
+    }
+    .achievement-card:hover { border-color: var(--cyan); box-shadow: var(--glow-soft); }
+
+    .achievement-dot {
+      width: 8px; height: 8px;
+      background: var(--cyan);
+      box-shadow: var(--glow);
+      border-radius: 0;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .achievement-card h4 {
+      font-family: var(--ff-display);
+      font-size: 12px;
+      letter-spacing: .04em;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+    .achievement-card p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Modal */
+    .modal-container {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200;
+      pointer-events: none;
+      visibility: hidden;
+    }
+    .modal-container.active { pointer-events: all; visibility: visible; }
+
+    .overlay {
+      position: fixed; inset: 0;
+      background: hsla(222,25%,4%,.88);
+      opacity: 0;
+      transition: opacity var(--t1);
+      backdrop-filter: blur(4px);
+    }
+    .modal-container.active .overlay { opacity: 1; }
+
+    .modal-box {
+      background: var(--bg-2);
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+      padding: 28px;
+      max-width: 480px;
+      width: 90%;
+      position: relative;
+      z-index: 1;
+      transform: scale(.95);
+      opacity: 0;
+      transition: all var(--t1);
+      box-shadow: var(--glow-soft), var(--shadow);
+    }
+    .modal-container.active .modal-box { transform: scale(1); opacity: 1; }
+
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 30px; height: 30px;
+      border: 1px solid var(--cyan-border);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--cyan);
+      font-size: 18px;
+      transition: all var(--t1);
+    }
+    .modal-close:hover { border-color: var(--cyan); box-shadow: var(--glow-soft); }
+
+    .modal-title {
+      font-family: var(--ff-display);
+      font-size: 14px;
+      letter-spacing: .06em;
+      color: var(--cyan);
+      margin-bottom: 12px;
+      padding-right: 30px;
+    }
+    .modal-text { color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+
+    /* ==================== RESUME ==================== */
+    .timeline { margin-bottom: 36px; }
+
+    .timeline-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .timeline-list { margin-left: 20px; }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 28px;
+      padding-bottom: 28px;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    /* Vertical line */
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      top: 6px; left: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--cyan), transparent);
+      opacity: .35;
+    }
+    .timeline-item:last-child::before { display: none; }
+
+    /* Dot */
+    .timeline-item::after {
+      content: "";
+      position: absolute;
+      top: 6px; left: -4px;
+      width: 9px; height: 9px;
+      background: var(--cyan);
+      box-shadow: var(--glow);
+      border-radius: 0;
+    }
+
+    .timeline-item-title {
+      font-family: var(--ff-display);
+      font-size: 13px;
+      letter-spacing: .04em;
+      margin-bottom: 4px;
+    }
+
+    .timeline-item span {
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      color: var(--cyan);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .timeline-text {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .timeline-text b { color: var(--cyan); }
+
+    /* Skills */
+    .skills-section { margin-bottom: 28px; }
+    .skills-title { margin-bottom: 18px; }
+
+    .skills-grid {
+      display: grid;
+      gap: 14px;
+      padding: 20px;
+      background: var(--bg-2);
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+    }
+
+    .skill-item { }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .skill-name {
+      font-family: var(--ff-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .skill-pct {
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      color: var(--cyan);
+    }
+
+    .skill-bar-bg {
+      background: var(--bg-3);
+      height: 4px;
+      border-radius: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--cyan), hsl(200,100%,65%));
+      box-shadow: var(--glow-soft);
+      position: relative;
+      transition: width 1s ease;
+    }
+    .skill-bar-fill::after {
+      content: "";
+      position: absolute;
+      right: 0; top: 0;
+      width: 3px; height: 100%;
+      background: #fff;
+      box-shadow: var(--glow);
+      animation: blip 1.8s ease-in-out infinite;
+    }
+    @keyframes blip { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+    /* ==================== CERTIFICATES ==================== */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    @media (min-width: 600px) { .cert-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 900px) { .cert-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .cert-card {
+      background: var(--bg-2);
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color var(--t1), box-shadow var(--t1);
+    }
+    .cert-card:hover { border-color: var(--cyan); box-shadow: var(--glow-soft); }
+
+    .cert-img-box {
+      width: 100%; height: 140px;
+      background: var(--bg-3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+      color: var(--cyan);
+      text-shadow: var(--glow);
+      position: relative;
+      overflow: hidden;
+    }
+    .cert-img-box::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--cyan-faint), transparent);
+    }
+
+    .cert-content { padding: 14px 16px; }
+
+    .cert-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .cert-category {
+      font-family: var(--ff-mono);
+      font-size: 10px;
+      color: var(--cyan-dim);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .cert-dot {
+      width: 4px; height: 4px;
+      background: var(--cyan);
+      box-shadow: var(--glow-soft);
+      flex-shrink: 0;
+    }
+
+    .cert-year {
+      font-family: var(--ff-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .cert-title {
+      font-family: var(--ff-display);
+      font-size: 12px;
+      letter-spacing: .04em;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      line-height: 1.4;
+      transition: color var(--t1);
+    }
+    .cert-card:hover .cert-title { color: var(--cyan); }
+
+    /* Certificate link button */
+    .cert-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 10px 16px 14px;
+      padding: 5px 12px;
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      color: var(--cyan);
+      border: 1px solid var(--cyan-border);
+      border-radius: 3px;
+      transition: background var(--t1), box-shadow var(--t1);
+      cursor: pointer;
+      background: none;
+      text-decoration: none;
+    }
+    .cert-link:hover {
+      background: var(--cyan-faint);
+      box-shadow: var(--glow-soft);
+    }
+    .cert-link ion-icon { font-size: 13px; }
+
+    /* Image-based cert modal */
+    .cert-modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: hsla(222,25%,4%,.92);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      backdrop-filter: blur(6px);
+    }
+    .cert-modal-overlay.active { display: flex; }
+
+    .cert-modal-box {
+      background: var(--bg-1);
+      border: 1px solid var(--cyan-border);
+      border-radius: 6px;
+      width: min(95vw, 860px);
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--glow-soft), var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    /* corner brackets on modal */
+    .cert-modal-box::before {
+      content: "";
+      position: absolute; top: -1px; left: -1px;
+      width: 16px; height: 16px;
+      border-top: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan);
+      z-index: 2; pointer-events: none;
+    }
+    .cert-modal-box::after {
+      content: "";
+      position: absolute; bottom: -1px; right: -1px;
+      width: 16px; height: 16px;
+      border-bottom: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan);
+      z-index: 2; pointer-events: none;
+    }
+
+    .cert-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--cyan-border);
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      color: var(--cyan);
+      flex-shrink: 0;
+      gap: 12px;
+    }
+    .cert-modal-header-left {
+      display: flex; align-items: center; gap: 8px;
+      overflow: hidden;
+    }
+    .cert-modal-header-left ion-icon { font-size: 15px; flex-shrink: 0; }
+    .cert-modal-title-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .cert-modal-close {
+      background: none; border: 1px solid var(--cyan-border);
+      cursor: pointer; color: var(--text-muted);
+      font-size: 18px; display: flex; align-items: center;
+      border-radius: 3px; padding: 2px;
+      transition: color var(--t1), border-color var(--t1), box-shadow var(--t1);
+      flex-shrink: 0;
+    }
+    .cert-modal-close:hover { color: var(--cyan); border-color: var(--cyan); box-shadow: var(--glow-soft); }
+
+    /* Image display area */
+    .cert-modal-img-wrap {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: var(--bg-2);
+      position: relative;
+    }
+    .cert-modal-img {
+      max-width: 100%;
+      max-height: 60vh;
+      border-radius: 4px;
+      border: 1px solid var(--cyan-border);
+      box-shadow: 0 0 30px hsla(177,100%,50%,.12);
+      display: block;
+    }
+    /* Scan effect over cert image */
+    .cert-modal-scan {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        hsla(177,100%,50%,.03) 3px, hsla(177,100%,50%,.03) 4px
+      );
+      pointer-events: none;
+    }
+    /* No-image fallback */
+    .cert-modal-no-img {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-family: var(--ff-mono);
+      font-size: 13px;
+      text-align: center;
+      padding: 40px;
+    }
+    .cert-modal-no-img ion-icon { font-size: 40px; color: var(--cyan); }
+
+    /* Footer actions */
+    .cert-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-top: 1px solid var(--cyan-border);
+      gap: 10px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .cert-modal-id {
+      font-family: var(--ff-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: .06em;
+    }
+    .cert-modal-id span { color: var(--cyan); }
+    .cert-verify-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px;
+      font-family: var(--ff-mono); font-size: 11px;
+      color: var(--bg-deep);
+      background: var(--cyan);
+      border: none; border-radius: 3px;
+      cursor: pointer; text-decoration: none;
+      box-shadow: var(--glow-soft);
+      transition: opacity var(--t1), box-shadow var(--t1);
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .cert-verify-btn:hover { opacity: .85; box-shadow: var(--glow); }
+
+    .cert-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ==================== CONTACT ==================== */
+    .mapbox {
+      height: 260px;
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      box-shadow: var(--glow-soft);
+    }
+    .mapbox iframe {
+      width: 100%; height: 100%;
+      border: none;
+      filter: grayscale(1) invert(1) hue-rotate(140deg) brightness(.75);
+    }
+
+    .form-title { margin-bottom: 20px; }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    @media (min-width: 600px) { .input-row { grid-template-columns: 1fr 1fr; } }
+
+    .form-input {
+      color: var(--text-main);
+      font-family: var(--ff-mono);
+      font-size: 13px;
+      padding: 12px 16px;
+      border: 1px solid var(--cyan-border);
+      border-radius: 2px;
+      background: var(--cyan-faint);
+      outline: none;
+      transition: border-color var(--t1), box-shadow var(--t1);
+    }
+    .form-input::placeholder { color: var(--text-muted); }
+    .form-input:focus { border-color: var(--cyan); box-shadow: var(--glow-soft); }
+    .form-input:focus:invalid { border-color: var(--danger); }
+
+    textarea.form-input {
+      min-height: 110px;
+      resize: vertical;
+      margin-bottom: 18px;
+    }
+
+    .form-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 28px;
+      border: 1px solid var(--cyan-border);
+      border-radius: 2px;
+      color: var(--cyan);
+      font-family: var(--ff-display);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      background: var(--cyan-faint);
+      transition: all var(--t1);
+      margin-left: auto;
+    }
+    .form-btn:hover:not(:disabled) {
+      border-color: var(--cyan);
+      box-shadow: var(--glow);
+      background: hsla(177,100%,50%,.15);
+      color: #fff;
+    }
+    .form-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* ==================== STATUS BAR ==================== */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--ff-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+    .status-dot {
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      box-shadow: var(--glow);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  </style>
+</head>
+<body>
+
+<main>
+
+  <!-- ======== SIDEBAR ======== -->
+  <aside class="sidebar panel">
+
+    <div class="sidebar-info">
+      <figure class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar-box">
+          <img src="./avatar-1.png" alt="Umang Raichura">
+        </div>
+        <span class="avatar-corner tl"></span>
+        <span class="avatar-corner tr"></span>
+        <span class="avatar-corner bl"></span>
+        <span class="avatar-corner br"></span>
+        <span class="avatar-status" title="Online"></span>
+      </figure>
+      <div class="info-content">
+        <h1 class="name">Umang Raichura</h1>
+        <p class="title">// Associate App-Sec Engineer</p>
+      </div>
+    </div>
+
+    <button class="show-contacts-btn" id="contactsToggle">
+      <span>Show Contacts</span>
+      <ion-icon name="chevron-down"></ion-icon>
+    </button>
+
+    <div class="sidebar-contacts" id="contactsPanel">
+      <div class="separator"></div>
+
+      <ul class="contacts-list">
+        <li class="contact-item">
+          <div class="icon-box"><ion-icon name="mail-outline"></ion-icon></div>
+          <div class="contact-info">
+            <p class="contact-title">Email</p>
+            <a href="/cdn-cgi/l/email-protection#41342c202f267976767401262c20282d6f222e2c" class="contact-link"><span class="__cf_email__" data-cfemail="2f5a424e41481718181a6f48424e4643014c4042">[email&#160;protected]</span></a>
+          </div>
+        </li>
+        <li class="contact-item">
+          <div class="icon-box"><ion-icon name="phone-portrait-outline"></ion-icon></div>
+          <div class="contact-info">
+            <p class="contact-title">Phone</p>
+            <a href="tel:+919867593438">+91 9867593438</a>
+          </div>
+        </li>
+        <li class="contact-item">
+          <div class="icon-box"><ion-icon name="calendar-outline"></ion-icon></div>
+          <div class="contact-info">
+            <p class="contact-title">Birthday</p>
+            <time datetime="2001-10-07">October 07, 2001</time>
+          </div>
+        </li>
+        <li class="contact-item">
+          <div class="icon-box"><ion-icon name="location-outline"></ion-icon></div>
+          <div class="contact-info">
+            <p class="contact-title">Location</p>
+            <address>Kandivali(W), Mumbai, India</address>
+          </div>
+        </li>
+      </ul>
+
+      <div class="separator"></div>
+
+      <ul class="social-list">
+        <li><a href="#" class="social-link"><ion-icon name="logo-github"></ion-icon></a></li>
+        <li><a href="https://www.linkedin.com/in/umang-raichura-070128222/" class="social-link" target="_blank"><ion-icon name="logo-linkedin"></ion-icon></a></li>
+        <li><a href="https://www.instagram.com/_umang07_" class="social-link" target="_blank"><ion-icon name="logo-instagram"></ion-icon></a></li>
+      </ul>
+    </div>
+
+  </aside>
+
+  <!-- ======== MAIN CONTENT ======== -->
+  <div class="main-content">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <ul class="navbar-list">
+        <li><button class="navbar-link active" data-nav>About</button></li>
+        <li><button class="navbar-link" data-nav>Resume</button></li>
+        <li><button class="navbar-link" data-nav>Certificate</button></li>
+        <li><button class="navbar-link" data-nav>Contact</button></li>
+      </ul>
+    </nav>
+
+    <!-- ======== ABOUT ======== -->
+    <article class="about active" data-page="about">
+      <header>
+        <div class="status-bar">
+          <div class="status-dot"></div>
+          <span>SYSTEM ONLINE &nbsp;|&nbsp; PROFILE LOADED</span>
+        </div>
+        <h2 class="h2 article-title">About Me</h2>
+      </header>
+
+      <section class="about-text">
+        <p class="typed-label">profile.overview</p>
+        <p>
+          Cybersecurity professional with a Master’s in IT/Data Science, experienced in data security, threat intelligence, and incident
+          response.Specialized in automated DevSecOps pipelines using <b>Python, integrating SIEM (Wazuh),SBOM, SAST, SCA, DAST,
+          and container security into CI/CD workflows</b>.Proven track record in strengthening security posture through <b>vulnerability
+          automation, system hardening, and supply chain risk mitigation</b>.
+        </p>
+      </section>
+
+      <!-- What I'm Doing -->
+      <section class="service">
+        <div class="section-label">What I'm doing</div>
+        <ul class="service-list">
+          <li class="service-item">
+            <div class="service-icon"><ion-icon name="shield-checkmark-outline"></ion-icon></div>
+            <div class="service-content-box">
+              <h4 class="h4 service-item-title">DevSecOps</h4>
+              <p class="timeline-text">Spearheaded DevSecOps and threat mitigation by automating vulnerability assessments with <b>Python</b>, integrating SCA/SAST into CI/CD pipelines, and coordinating VAPT compliance to fortify supply chain and organizational resilience.</p>
+            </div>
+          </li>
+          <li class="service-item">
+            <div class="service-icon"><ion-icon name="analytics-outline"></ion-icon></div>
+            <div class="service-content-box">
+              <h4 class="h4 service-item-title">Data Science</h4>
+              <p class="timeline-text">
+                > Data_Engine: Statistical processing via Python/Pandas<br>
+                > Visualization: High-level tactical reporting with Power BI
+              </p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Achievements -->
+      <section>
+        <div class="section-label">Achievements</div>
+        <div class="achievements-grid">
+
+          <div class="achievement-card" data-modal-open data-title="Winner of Aavishkar 2024 (University)" data-desc="Winner of Aavishkar 2024 at HSNC University, Mumbai — for developing a Portable Water Testing Kit with IoT components, addressing remote water quality challenges.">
+            <div class="achievement-dot"></div>
+            <div>
+              <h4>🏆 Winner — Aavishkar 2024 (University)</h4>
+              <p>HSNC University, Mumbai. Portable Water Testing Kit with IoT.</p>
+            </div>
+          </div>
+
+          <div class="achievement-card" data-modal-open data-title="Winner of AIINC 2024 (University)" data-desc="Secured 1st position in the AI International Conference for a research paper on AI Interviewer — a recruitment automation tool built with CV2, NumPy, Pandas, Sklearn, and NLP.">
+            <div class="achievement-dot"></div>
+            <div>
+              <h4>🥇 1st Place — AIINC 2024</h4>
+              <p>Research paper: AI Interviewer using CV2, NLP, Sklearn.</p>
+            </div>
+          </div>
+
+          <div class="achievement-card" data-modal-open data-title="Core Member of AIINC 2024" data-desc="Core member of the Artificial Intelligence International Conference 2024, held at K.C. College, HSNC University, Mumbai.">
+            <div class="achievement-dot"></div>
+            <div>
+              <h4>⚙️ Core Member — AIINC 2024</h4>
+              <p>K.C. College, HSNC University, Mumbai.</p>
+            </div>
+          </div>
+
+          <div class="achievement-card" data-modal-open data-title="Aavishkar 2024 — State Level Candidate" data-desc="Selected as a candidate at the Aavishkar 2024 State level competition (Maharashtra) at Nasik, MUHS University.">
+            <div class="achievement-dot"></div>
+            <div>
+              <h4>🌐 State Level — Aavishkar 2024</h4>
+              <p>Maharashtra state competition, MUHS University, Nasik.</p>
+            </div>
+          </div>
+
+          <div class="achievement-card" data-modal-open data-title="Nominated — Best Student 2024" data-desc="Nominated as Best Student 2024 at KC College, Mumbai, by the Department of Information & Technology for academics and contribution to the college.">
+            <div class="achievement-dot"></div>
+            <div>
+              <h4>⭐ Nominated — Best Student 2024</h4>
+              <p>KC College, Dept. of I.T. for academics & college contribution.</p>
+            </div>
+          </div>
+
+          <div class="achievement-card" data-modal-open data-title="Co-Head of Technical — Systematic Chaos 2023–24" data-desc="Co-Head of the Technical Department at KC College's annual fest 'Systematic Chaos' for the year 2023–2024.">
+            <div class="achievement-dot"></div>
+            <div>
+              <h4>🎛️ Co-Head Technical — Systematic Chaos</h4>
+              <p>Annual Fest, KC College Mumbai (2023–24).</p>
+            </div>
+          </div>
+
+          <div class="achievement-card" data-modal-open data-title="Nominated — Best Student 2022" data-desc="Nominated as Best Student 2022 at Nagindas Khandwala College by the Department of Information & Technology.">
+            <div class="achievement-dot"></div>
+            <div>
+              <h4>⭐ Nominated — Best Student 2022</h4>
+              <p>Nagindas Khandwala College, Dept. of I.T.</p>
+            </div>
+          </div>
+
+          <div class="achievement-card" data-modal-open data-title="Core — Technical & Graphics (Zestech & Aavhan 2020–22)" data-desc="Core Member of Technical & Graphics for Zestech and Aavhan (2020–21 and 2021–22) at Nagindas Khandwala College, supporting the Dept. of I.T.">
+            <div class="achievement-dot"></div>
+            <div>
+              <h4>🖥️ Core — Tech & Graphics 2020–22</h4>
+              <p>Zestech & Aavhan fests, Nagindas Khandwala College.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </article>
+
+    <!-- ======== RESUME ======== -->
+    <article class="resume" data-page="resume">
+      <header>
+        <h2 class="h2 article-title">Resume</h2>
+      </header>
+
+      <!-- Education -->
+      <section class="timeline">
+        <div class="timeline-header">
+          <div class="icon-box"><ion-icon name="book-outline"></ion-icon></div>
+          <h3 class="h3">Education</h3>
+        </div>
+        <ol class="timeline-list">
+          <li class="timeline-item">
+            <h4 class="h4 timeline-item-title">Kishinchand Chellaram College</h4>
+            <span>2022 — 2024</span>
+            <p class="timeline-text">Masters in Information Technology &mdash; <b>CGPA 9.67 / 10</b></p>
+          </li>
+          <li class="timeline-item">
+            <h4 class="h4 timeline-item-title">Nagindas Khandwala College</h4>
+            <span>2019 — 2022</span>
+            <p class="timeline-text">Bachelor in Information Technology &mdash; <b>CGPA 8.17 / 10</b></p>
+          </li>
+          <li class="timeline-item">
+            <h4 class="h4 timeline-item-title">Shri T.P Bhatia Junior College of Science</h4>
+            <span>2017 — 2019</span>
+            <p class="timeline-text">HSC Science — <b>51.33%</b></p>
+          </li>
+          <li class="timeline-item">
+            <h4 class="h4 timeline-item-title">Dhanamal High School</h4>
+            <span>2016 — 2017</span>
+            <p class="timeline-text">SSC — <b>73.80%</b></p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Experience -->
+      <section class="timeline">
+        <div class="timeline-header">
+          <div class="icon-box"><ion-icon name="briefcase-outline"></ion-icon></div>
+          <h3 class="h3">Work Experience</h3>
+        </div>
+        <ol class="timeline-list">
+          <li class="timeline-item">
+            <h4 class="h4 timeline-item-title">Tss Consultancy Pvt Ltd</h4>
+            <span>05/2024 - Present</span>
+            <p class="timeline-text">
+              <b>></b> Utilized <b>data analytics</b> tools to identify and mitigate cyber risks, elevating threat detection capabilities.<br>
+              <b>></b> Automated network vulnerability assessments with <b>Python</b> scripting and enhanced OS security via <b>TLS cipher suite</b>.<br>
+              <b>></b> Designed <b>CI/CD</b> pipelines for package integrity verification, <b>SBOM</b>(SCA), <b>SonarQube</b> (SAST) into DevSecOps workflows.<br>
+              <b>></b> Managed Docker container backup and migration, using Python to extract CBOM/SBOM for supply chain security.<br>
+              <b>></b> Coordinated with <b>CERT-In</b>–associated vendors for <b>VAPT</b>, ensuring compliance and organizational resilience.<br>
+            </p>
+          </li>
+          <li class="timeline-item">
+            <h4 class="h4 timeline-item-title">Networking Engineer — KC College</h4>
+            <span>04/2023 - 04/2024</span>
+            <p class="timeline-text"><b>></b> Firewall implementation, troubleshooting and optimizing networks for seamless operations.<br> Ensuring robust cybersecurity measures and providing high-quality technical support within academic frameworks.</p>
+          </li>
+          <li class="timeline-item">
+            <h4 class="h4 timeline-item-title">PWTK Research Project — KC College</h4>
+            <span>04/2023 - 04/2024</span>
+            <p class="timeline-text"><b>></b> Portable Water Testing Kit for <b>Aavishkar 2024</b> — addressing remote water quality challenges using IoT components.<br> Significant advance in sustainable water management.</p>
+          </li>
+          <li class="timeline-item">
+            <h4 class="h4 timeline-item-title">Network Support Engineer — Maahee Technologies</h4>
+            <span>01/2023 - 03/2023</span>
+            <p class="timeline-text"><b>></b> <b>Client management</b>, Configuring Firewalls, Access Points, and Analyzers.<br> Proficient troubleshooting and delivering effective network solutions.</p>
+          </li>
+          <li class="timeline-item">
+            <h4 class="h4 timeline-item-title">Content Associate & Graphic Designer — Testlify / HNR Tech</h4>
+            <span>04/2022 - 09/2022</span>
+            <p class="timeline-text"><b>></b> Working with SMEs from various fields, quality analysis of web platforms, and graphic design support at <b>HNR Tech</b>.</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Software Skills -->
+      <section class="skills-section">
+        <div class="section-label">Software Skills</div>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Python</span><span class="skill-pct">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Adobe Photoshop</span><span class="skill-pct">90%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:90%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Adobe Illustrator</span><span class="skill-pct">70%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Pandas</span><span class="skill-pct">75%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:75%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Linux</span><span class="skill-pct">65%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:65%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">R Programming</span><span class="skill-pct">60%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:60%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Power BI</span><span class="skill-pct">50%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:50%"></div></div></div>
+        </div>
+      </section>
+
+      <!-- Soft Skills -->
+      <section class="skills-section">
+        <div class="section-label">Soft Skills</div>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Leadership</span><span class="skill-pct">85%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Adaptability</span><span class="skill-pct">90%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:90%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Problem-Solving</span><span class="skill-pct">70%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Continuous Learning</span><span class="skill-pct">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Ethical & Responsible</span><span class="skill-pct">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+        </div>
+      </section>
+
+      <!-- Languages -->
+      <section class="skills-section">
+        <div class="section-label">Languages</div>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">English</span><span class="skill-pct">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Gujarati</span><span class="skill-pct">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Hindi</span><span class="skill-pct">70%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span class="skill-name">Marathi</span><span class="skill-pct">50%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:50%"></div></div></div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- ======== CERTIFICATE ======== -->
+    <article class="certificate" data-page="certificate">
+      <header>
+        <h2 class="h2 article-title">Certificates</h2>
+      </header>
+
+      <div class="cert-grid">
+
+        <!-- 1. Foundations of Cybersecurity — Google -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="shield-checkmark-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Cybersecurity</span><div class="cert-dot"></div><span class="cert-year">Jul 2024</span></div>
+            <h3 class="cert-title">Foundations of Cybersecurity</h3>
+            <p class="cert-text">Google — Coursera</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Foundations of Cybersecurity — Google','coursera','Y3HFZBLRM8UQ','https://www.coursera.org/verify/Y3HFZBLRM8UQ')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 2. Play It Safe: Manage Security Risks — Google -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="warning-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Cybersecurity</span><div class="cert-dot"></div><span class="cert-year">Jul 2024</span></div>
+            <h3 class="cert-title">Play It Safe: Manage Security Risks</h3>
+            <p class="cert-text">Google — Coursera</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Play It Safe: Manage Security Risks — Google','coursera','T2GQJP766AWC','https://www.coursera.org/verify/T2GQJP766AWC')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 3. Connect and Protect: Networks — Google -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="globe-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Network Security</span><div class="cert-dot"></div><span class="cert-year">Aug 2024</span></div>
+            <h3 class="cert-title">Connect and Protect: Networks and Network Security</h3>
+            <p class="cert-text">Google — Coursera</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Connect and Protect: Networks — Google','coursera','AO11ZJQVS5YS','https://www.coursera.org/verify/AO11ZJQVS5YS')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 4. Tools of the Trade: Linux and SQL — Google -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="terminal-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Linux / SQL</span><div class="cert-dot"></div><span class="cert-year">Aug 2024</span></div>
+            <h3 class="cert-title">Tools of the Trade: Linux and SQL</h3>
+            <p class="cert-text">Google — Coursera</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Tools of the Trade: Linux and SQL — Google','coursera','1d0bc23dce685e7e342a4c211c1c8619','https://www.coursera.org/verify/1d0bc23dce685e7e342a4c211c1c8619')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 5. Fortinet Certified Associate in Cybersecurity -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="ribbon-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Cybersecurity</span><div class="cert-dot"></div><span class="cert-year">Aug 2024</span></div>
+            <h3 class="cert-title">Certified Associate in Cybersecurity</h3>
+            <p class="cert-text">Fortinet · ID: 3012301294UR</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Fortinet Certified Associate in Cybersecurity','direct','3012301294UR','https://www.fortinet.com/training/cybersecurity-professionals','','Expires Aug 2026')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 6. CCCourse Conclusion — ISC2 -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="lock-closed-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Security Principles</span><div class="cert-dot"></div><span class="cert-year">Oct 2024</span></div>
+            <h3 class="cert-title">CC Course Conclusion &amp; Final Assessment</h3>
+            <p class="cert-text">ISC2 · Expires Oct 2027</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('CC Course Conclusion & Final Assessment — ISC2','direct','e761fc61-520f-40b5-9d91-85f0e7da38c9','https://www.isc2.org/','','Expires Oct 2027')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 7. Career Essentials in Cybersecurity — Microsoft & LinkedIn -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="briefcase-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Cybersecurity</span><div class="cert-dot"></div><span class="cert-year">Oct 2024</span></div>
+            <h3 class="cert-title">Career Essentials in Cybersecurity</h3>
+            <p class="cert-text">Microsoft &amp; LinkedIn</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Career Essentials in Cybersecurity — Microsoft & LinkedIn','direct','ef213c15af15f86c4359d1f5f80bd49b00adee9d73f272c85b4fe8c5f54cbcad','https://www.linkedin.com/learning/certificates/ef213c15af15f86c4359d1f5f80bd49b00adee9d73f272c85b4fe8c5f54cbcad')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 8. Microsoft Copilot for Security — LinkedIn -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="sparkles-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Microsoft Copilot</span><div class="cert-dot"></div><span class="cert-year">Oct 2024</span></div>
+            <h3 class="cert-title">Microsoft Copilot for Security</h3>
+            <p class="cert-text">LinkedIn Learning</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Microsoft Copilot for Security — LinkedIn','direct','','https://www.linkedin.com/learning/')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 9. Cybersecurity Awareness: Terminology — LinkedIn -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="megaphone-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Cybersecurity</span><div class="cert-dot"></div><span class="cert-year">Oct 2024</span></div>
+            <h3 class="cert-title">Cybersecurity Awareness: Terminology</h3>
+            <p class="cert-text">LinkedIn Learning</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Cybersecurity Awareness: Terminology — LinkedIn','direct','','https://www.linkedin.com/learning/')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 10. Cybersecurity Foundations — LinkedIn -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="shield-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Cybersecurity</span><div class="cert-dot"></div><span class="cert-year">Oct 2024</span></div>
+            <h3 class="cert-title">Cybersecurity Foundations</h3>
+            <p class="cert-text">LinkedIn Learning</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Cybersecurity Foundations — LinkedIn','direct','','https://www.linkedin.com/learning/')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 11. The Cybersecurity Threat Landscape — LinkedIn -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="scan-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Threat Management</span><div class="cert-dot"></div><span class="cert-year">Oct 2024</span></div>
+            <h3 class="cert-title">The Cybersecurity Threat Landscape</h3>
+            <p class="cert-text">LinkedIn Learning</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('The Cybersecurity Threat Landscape — LinkedIn','direct','','https://www.linkedin.com/learning/')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 12. SQL Injection Attacks — EC-Council -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="code-slash-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Ethical Hacking</span><div class="cert-dot"></div><span class="cert-year">Sep 2024</span></div>
+            <h3 class="cert-title">SQL Injection Attacks</h3>
+            <p class="cert-text">EC-Council</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('SQL Injection Attacks — EC-Council','direct','','https://www.eccouncil.org/')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 13. Cybersecurity for Businesses — EC-Council -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="business-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Risk Assessment</span><div class="cert-dot"></div><span class="cert-year">Sep 2024</span></div>
+            <h3 class="cert-title">Cybersecurity for Businesses — Fundamental</h3>
+            <p class="cert-text">EC-Council</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Cybersecurity for Businesses — EC-Council','direct','','https://www.eccouncil.org/')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 14. Introduction to Cybersecurity — Cisco -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="wifi-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Cybersecurity</span><div class="cert-dot"></div><span class="cert-year">Aug 2024</span></div>
+            <h3 class="cert-title">Introduction to Cybersecurity</h3>
+            <p class="cert-text">Cisco Networking Academy</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Introduction to Cybersecurity — Cisco','direct','','https://www.netacad.com/')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+        <!-- 15. Securing API Servers — APIsec University (Credly) -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="git-network-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">API Security</span><div class="cert-dot"></div><span class="cert-year">Oct 2025</span></div>
+            <h3 class="cert-title">Securing API Servers (2 hours)</h3>
+            <p class="cert-text">APIsec University — Credly</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Securing API Servers — APIsec University','credly','https://images.credly.com/size/680x680/images/71296528-e07b-44af-b5cd-7723599793cf/image.png','https://www.credly.com/badges/20fd2620-f23b-4d84-8b07-9eb87739f77e/public_url','20fd2620-f23b-4d84-8b07-9eb87739f77e')">
+            <ion-icon name="open-outline"></ion-icon> View Badge
+          </button>
+        </div>
+
+        <!-- 16. APIsec Certified Practitioner — APIsec University (Credly) -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="shield-half-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">API Security</span><div class="cert-dot"></div><span class="cert-year">Oct 2025</span></div>
+            <h3 class="cert-title">APIsec Certified Practitioner</h3>
+            <p class="cert-text">APIsec University — Credly</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('APIsec Certified Practitioner — APIsec University','credly','https://images.credly.com/size/680x680/images/df07f8b6-b954-41f7-9a79-db5cbbe6e7c4/image.png','https://www.credly.com/badges/12e49d8f-4f5a-425b-9d1c-7e831df25991/public_url','12e49d8f-4f5a-425b-9d1c-7e831df25991')">
+            <ion-icon name="open-outline"></ion-icon> View Badge
+          </button>
+        </div>
+
+        <!-- 17. API Security Fundamentals — APIsec University -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="key-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">API Security</span><div class="cert-dot"></div><span class="cert-year">Oct 2025</span></div>
+            <h3 class="cert-title">API Security Fundamentals '25</h3>
+            <p class="cert-text">APIsec University — Credly</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('API Security Fundamentals — APIsec University','direct','','https://www.apisecuniversity.com/')">
+            <ion-icon name="open-outline"></ion-icon> View Badge
+          </button>
+        </div>
+
+        <!-- 18. Introduction to Ethical Hacking — Great Learning -->
+        <div class="cert-card">
+          <div class="cert-img-box"><ion-icon name="skull-outline"></ion-icon></div>
+          <div class="cert-content">
+            <div class="cert-meta"><span class="cert-category">Ethical Hacking</span><div class="cert-dot"></div><span class="cert-year">2023</span></div>
+            <h3 class="cert-title">Introduction to Ethical Hacking</h3>
+            <p class="cert-text">Great Learning</p>
+          </div>
+          <button class="cert-link" onclick="openCertModal('Introduction to Ethical Hacking — Great Learning','direct','','https://www.mygreatlearning.com/')">
+            <ion-icon name="open-outline"></ion-icon> View Certificate
+          </button>
+        </div>
+
+      </div><!-- .cert-grid -->
+    </article>
+
+    <!-- ===== CERTIFICATE IMAGE MODAL ===== -->
+    <div class="cert-modal-overlay" id="certModal">
+      <div class="cert-modal-box">
+
+        <div class="cert-modal-header">
+          <div class="cert-modal-header-left">
+            <ion-icon name="ribbon-outline"></ion-icon>
+            <span class="cert-modal-title-text" id="certModalTitle">Certificate</span>
+          </div>
+          <button class="cert-modal-close" onclick="closeCertModal()">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+
+        <div class="cert-modal-img-wrap" id="certModalImgWrap">
+          <div class="cert-modal-scan"></div>
+          <img class="cert-modal-img" id="certModalImg" src="" alt="Certificate">
+          <div class="cert-modal-no-img" id="certModalNoImg">
+            <ion-icon name="document-outline"></ion-icon>
+            <p>No preview available.<br>Click Verify below to view online.</p>
+          </div>
+        </div>
+
+        <div class="cert-modal-footer">
+          <span class="cert-modal-id">CERT-ID: <span id="certModalId">—</span></span>
+          <a class="cert-verify-btn" id="certVerifyBtn" href="#" target="_blank" rel="noopener">
+            <ion-icon name="shield-checkmark-outline"></ion-icon> Verify Certificate
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======== CONTACT ======== -->
+    <article class="contact" data-page="contact">
+      <header>
+        <h2 class="h2 article-title">Contact</h2>
+      </header>
+
+      <section class="mapbox">
+        <figure>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30141.351788580174!2d72.80838192260816!3d19.20965539942304!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6c71e00b21f%3A0xfa74b1f57d575513!2sKandivali%2C%20Kandivali%20West%2C%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1711051158861!5m2!1sen!2sin"
+            loading="lazy"></iframe>
+        </figure>
+      </section>
+
+      <section class="contact-form">
+        <h3 class="h3 form-title">Send a Message</h3>
+        <form data-form>
+          <div class="input-row">
+            <input type="text" class="form-input" placeholder="Full name" required data-form-input>
+            <input type="email" class="form-input" placeholder="Email address" required data-form-input>
+          </div>
+          <textarea class="form-input" placeholder="Your message..." required data-form-input></textarea>
+          <button class="form-btn" type="submit" disabled data-form-btn>
+            <ion-icon name="paper-plane-outline"></ion-icon>
+            <span>Send Message</span>
+          </button>
+        </form>
+      </section>
+    </article>
+
+  </div><!-- .main-content -->
+
+</main>
+
+<!-- ACHIEVEMENT MODAL -->
+<div class="modal-container" id="modal">
+  <div class="overlay" id="modalOverlay"></div>
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose"><ion-icon name="close-outline"></ion-icon></button>
+    <h3 class="modal-title" id="modalTitle"></h3>
+    <p class="modal-text" id="modalText"></p>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // ── NAV TABS ──
+  const navBtns = document.querySelectorAll('[data-nav]');
+  const articles = document.querySelectorAll('article[data-page]');
+
+  navBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.textContent.trim().toLowerCase();
+      navBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      articles.forEach(a => {
+        a.classList.toggle('active', a.dataset.page === target);
+      });
+    });
+  });
+
+  // ── CONTACTS TOGGLE (mobile) ──
+  const toggle = document.getElementById('contactsToggle');
+  const panel  = document.getElementById('contactsPanel');
+  toggle.addEventListener('click', () => {
+    panel.classList.toggle('open');
+    toggle.classList.toggle('open');
+  });
+
+  // ── ACHIEVEMENT MODAL ──
+  const modal       = document.getElementById('modal');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalClose  = document.getElementById('modalClose');
+  const modalTitle  = document.getElementById('modalTitle');
+  const modalText   = document.getElementById('modalText');
+
+  document.querySelectorAll('[data-modal-open]').forEach(card => {
+    card.addEventListener('click', () => {
+      modalTitle.textContent = card.dataset.title;
+      modalText.textContent  = card.dataset.desc;
+      modal.classList.add('active');
+    });
+  });
+
+  [modalOverlay, modalClose].forEach(el => {
+    el.addEventListener('click', () => modal.classList.remove('active'));
+  });
+
+  // ── FORM VALIDATION ──
+  const formInputs = document.querySelectorAll('[data-form-input]');
+  const formBtn    = document.querySelector('[data-form-btn]');
+
+  if (formInputs.length && formBtn) {
+    formInputs.forEach(input => {
+      input.addEventListener('input', () => {
+        formBtn.disabled = !Array.from(formInputs).every(i => i.value.trim());
+      });
+    });
+  }
+
+  // ── CERTIFICATE IMAGE MODAL ──
+  // openCertModal(title, type, imgOrId, verifyUrl, badgeId, extra)
+  // type = 'coursera' | 'credly' | 'direct'
+  // coursera: imgOrId = cert ID, auto-builds S3 image URL
+  // credly:   imgOrId = full images.credly.com URL
+  // direct:   imgOrId = '' (no image, show fallback) or full image URL
+
+  function openCertModal(title, type, imgOrId, verifyUrl, badgeId, extra) {
+    const overlay   = document.getElementById('certModal');
+    const titleEl   = document.getElementById('certModalTitle');
+    const img       = document.getElementById('certModalImg');
+    const noImg     = document.getElementById('certModalNoImg');
+    const certIdEl  = document.getElementById('certModalId');
+    const verifyBtn = document.getElementById('certVerifyBtn');
+
+    titleEl.textContent = title;
+    verifyBtn.href = verifyUrl || '#';
+
+    let imgSrc = '';
+    let displayId = '—';
+
+    if (type === 'coursera' && imgOrId) {
+      imgSrc = `https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE~${imgOrId}/CERTIFICATE_LANDING_PAGE~${imgOrId}.jpeg`;
+      displayId = imgOrId;
+    } else if (type === 'credly' && imgOrId) {
+      imgSrc = imgOrId;
+      displayId = badgeId || '—';
+    } else if (type === 'direct' && imgOrId) {
+      imgSrc = imgOrId;
+      displayId = badgeId || imgOrId.substring(0, 32) + '…';
+    } else {
+      displayId = badgeId || imgOrId || '—';
+    }
+
+    certIdEl.textContent = displayId;
+
+    if (imgSrc) {
+      img.src = imgSrc;
+      img.style.display = 'block';
+      noImg.style.display = 'none';
+      img.onerror = function() {
+        img.style.display = 'none';
+        noImg.style.display = 'flex';
+      };
+    } else {
+      img.src = '';
+      img.style.display = 'none';
+      noImg.style.display = 'flex';
+    }
+
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCertModal() {
+    document.getElementById('certModal').classList.remove('active');
+    document.getElementById('certModalImg').src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('certModal').addEventListener('click', function(e) {
+    if (e.target === this) closeCertModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeCertModal();
+  });
+
+</script>
+</body>
+</html>
