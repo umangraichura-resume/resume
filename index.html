@@ -167,116 +167,27 @@
       .sidebar-info .info-content { text-align: center; }
     }
 
-    /* ── CYBER AVATAR ── */
-    .avatar-wrap {
+    /* Avatar */
+    .avatar-box {
+      border: 2px solid var(--cyan-border);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: var(--glow-soft);
       position: relative;
-      width: 110px; height: 110px;
+      width: 90px; height: 90px;
       flex-shrink: 0;
     }
-    @media (min-width: 1024px) { .avatar-wrap { width: 160px; height: 160px; } }
+    @media (min-width: 1024px) { .avatar-box { width: 140px; height: 140px; } }
 
-    /* Spinning outer ring */
-    .avatar-ring {
-      position: absolute; inset: -6px;
-      border-radius: 50%;
-      background: conic-gradient(
-        var(--cyan) 0deg 90deg,
-        transparent 90deg 180deg,
-        var(--magenta) 180deg 270deg,
-        transparent 270deg 360deg
-      );
-      animation: ring-spin 4s linear infinite;
-      z-index: 0;
-    }
-    @keyframes ring-spin { to { transform: rotate(360deg); } }
-
-    /* Ring mask so only border shows */
-    .avatar-ring::after {
-      content: "";
-      position: absolute; inset: 4px;
-      border-radius: 50%;
-      background: var(--bg-1);
-    }
-
-    /* Hex clip container */
-    .avatar-box {
-      position: absolute; inset: 6px;
-      border-radius: 50%;
-      overflow: hidden;
-      z-index: 1;
-      background: var(--bg-3);
-    }
-
-    .avatar-box img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      filter: saturate(1.1) contrast(1.05);
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Cyan tint overlay */
-    .avatar-box::before {
-      content: "";
-      position: absolute; inset: 0;
-      background: linear-gradient(160deg, hsla(177,100%,50%,.12) 0%, transparent 60%);
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    /* Scanlines over avatar */
+    /* Shimmer on avatar */
     .avatar-box::after {
       content: "";
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 2px,
-        hsla(0,0%,0%,.18) 2px, hsla(0,0%,0%,.18) 3px
-      );
-      z-index: 3;
-      pointer-events: none;
+      position: absolute; top: 0; left: -120%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, hsla(177,100%,80%,.12), transparent);
+      animation: shimmer 5s ease-in-out infinite;
     }
-
-    /* Glitch effect on hover */
-    .avatar-wrap:hover .avatar-box img {
-      animation: glitch 0.4s steps(2) infinite;
-    }
-    @keyframes glitch {
-      0%   { clip-path: inset(10% 0 80% 0); transform: translate(-3px, 0); filter: hue-rotate(90deg) saturate(2); }
-      25%  { clip-path: inset(60% 0 10% 0); transform: translate(3px, 0);  filter: hue-rotate(180deg) saturate(2); }
-      50%  { clip-path: inset(30% 0 40% 0); transform: translate(-2px, 0); filter: hue-rotate(270deg) saturate(2); }
-      75%  { clip-path: inset(70% 0 5% 0);  transform: translate(2px, 0);  filter: hue-rotate(0deg) saturate(2); }
-      100% { clip-path: inset(0); transform: translate(0); filter: none; }
-    }
-
-    /* Corner bracket decorations */
-    .avatar-corner {
-      position: absolute;
-      width: 14px; height: 14px;
-      border-color: var(--cyan);
-      border-style: solid;
-      z-index: 4;
-    }
-    .avatar-corner.tl { top: 2px; left: 2px; border-width: 2px 0 0 2px; }
-    .avatar-corner.tr { top: 2px; right: 2px; border-width: 2px 2px 0 0; }
-    .avatar-corner.bl { bottom: 2px; left: 2px; border-width: 0 0 2px 2px; }
-    .avatar-corner.br { bottom: 2px; right: 2px; border-width: 0 2px 2px 0; }
-
-    /* Status dot */
-    .avatar-status {
-      position: absolute;
-      bottom: 8px; right: 4px;
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      background: #00ff88;
-      box-shadow: 0 0 6px #00ff88, 0 0 14px #00ff88;
-      z-index: 5;
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3); opacity: .7; }
-    }
+    @keyframes shimmer { 0%{left:-120%} 60%,100%{left:160%} }
 
     .avatar-placeholder {
       width: 100%; height: 100%;
@@ -790,7 +701,85 @@
     }
     @keyframes blip { 0%,100%{opacity:1} 50%{opacity:.2} }
 
-    /* ==================== CERTIFICATES ==================== */
+    /* ==================== SKILLS — TAG STYLE ==================== */
+    .skills-section { margin-bottom: 32px; }
+
+    .tool-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 18px;
+      background: var(--bg-2);
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+    }
+
+    .tool-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: var(--bg-3);
+      border: 1px solid var(--cyan-border);
+      border-radius: 2px;
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      color: var(--text-main);
+      letter-spacing: .04em;
+      transition: all var(--t1);
+      cursor: default;
+    }
+    .tool-tag::before {
+      content: ">";
+      color: var(--cyan);
+      font-size: 10px;
+    }
+    .tool-tag:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: var(--cyan-faint);
+      box-shadow: var(--glow-soft);
+    }
+    .tool-tag.highlight {
+      border-color: hsla(177,100%,50%,.4);
+      color: var(--cyan);
+      background: var(--cyan-faint);
+    }
+
+    /* Keep old bar styles for language section */
+    .skills-grid {
+      display: grid;
+      gap: 14px;
+      padding: 20px;
+      background: var(--bg-2);
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+    }
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .skill-name { font-family: var(--ff-body); font-size: 13px; font-weight: 500; color: var(--text-main); }
+    .skill-pct { font-family: var(--ff-mono); font-size: 11px; color: var(--cyan); }
+    .skill-bar-bg { background: var(--bg-3); height: 4px; border-radius: 0; overflow: hidden; position: relative; }
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--cyan), hsl(200,100%,65%));
+      box-shadow: var(--glow-soft);
+      position: relative;
+      transition: width 1s ease;
+    }
+    .skill-bar-fill::after {
+      content: "";
+      position: absolute; right: 0; top: 0;
+      width: 3px; height: 100%;
+      background: #fff;
+      box-shadow: var(--glow);
+      animation: blip 1.8s ease-in-out infinite;
+    }
+    @keyframes blip { 0%,100%{opacity:1} 50%{opacity:.2} }
     .cert-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -865,188 +854,55 @@
     }
     .cert-card:hover .cert-title { color: var(--cyan); }
 
-    /* Certificate link button */
-    .cert-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin: 10px 16px 14px;
-      padding: 5px 12px;
-      font-family: var(--ff-mono);
-      font-size: 11px;
-      color: var(--cyan);
-      border: 1px solid var(--cyan-border);
-      border-radius: 3px;
-      transition: background var(--t1), box-shadow var(--t1);
-      cursor: pointer;
-      background: none;
-      text-decoration: none;
-    }
-    .cert-link:hover {
-      background: var(--cyan-faint);
-      box-shadow: var(--glow-soft);
-    }
-    .cert-link ion-icon { font-size: 13px; }
-
-    /* Image-based cert modal */
-    .cert-modal-overlay {
-      display: none;
-      position: fixed; inset: 0;
-      background: hsla(222,25%,4%,.92);
-      z-index: 10000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      backdrop-filter: blur(6px);
-    }
-    .cert-modal-overlay.active { display: flex; }
-
-    .cert-modal-box {
-      background: var(--bg-1);
-      border: 1px solid var(--cyan-border);
-      border-radius: 6px;
-      width: min(95vw, 860px);
-      max-height: 92vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: var(--glow-soft), var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-    /* corner brackets on modal */
-    .cert-modal-box::before {
-      content: "";
-      position: absolute; top: -1px; left: -1px;
-      width: 16px; height: 16px;
-      border-top: 2px solid var(--cyan);
-      border-left: 2px solid var(--cyan);
-      z-index: 2; pointer-events: none;
-    }
-    .cert-modal-box::after {
-      content: "";
-      position: absolute; bottom: -1px; right: -1px;
-      width: 16px; height: 16px;
-      border-bottom: 2px solid var(--cyan);
-      border-right: 2px solid var(--cyan);
-      z-index: 2; pointer-events: none;
-    }
-
-    .cert-modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--cyan-border);
-      font-family: var(--ff-mono);
-      font-size: 11px;
-      color: var(--cyan);
-      flex-shrink: 0;
-      gap: 12px;
-    }
-    .cert-modal-header-left {
-      display: flex; align-items: center; gap: 8px;
-      overflow: hidden;
-    }
-    .cert-modal-header-left ion-icon { font-size: 15px; flex-shrink: 0; }
-    .cert-modal-title-text {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .cert-modal-close {
-      background: none; border: 1px solid var(--cyan-border);
-      cursor: pointer; color: var(--text-muted);
-      font-size: 18px; display: flex; align-items: center;
-      border-radius: 3px; padding: 2px;
-      transition: color var(--t1), border-color var(--t1), box-shadow var(--t1);
-      flex-shrink: 0;
-    }
-    .cert-modal-close:hover { color: var(--cyan); border-color: var(--cyan); box-shadow: var(--glow-soft); }
-
-    /* Image display area */
-    .cert-modal-img-wrap {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: var(--bg-2);
-      position: relative;
-    }
-    .cert-modal-img {
-      max-width: 100%;
-      max-height: 60vh;
-      border-radius: 4px;
-      border: 1px solid var(--cyan-border);
-      box-shadow: 0 0 30px hsla(177,100%,50%,.12);
-      display: block;
-    }
-    /* Scan effect over cert image */
-    .cert-modal-scan {
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 3px,
-        hsla(177,100%,50%,.03) 3px, hsla(177,100%,50%,.03) 4px
-      );
-      pointer-events: none;
-    }
-    /* No-image fallback */
-    .cert-modal-no-img {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      color: var(--text-muted);
-      font-family: var(--ff-mono);
-      font-size: 13px;
-      text-align: center;
-      padding: 40px;
-    }
-    .cert-modal-no-img ion-icon { font-size: 40px; color: var(--cyan); }
-
-    /* Footer actions */
-    .cert-modal-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 16px;
-      border-top: 1px solid var(--cyan-border);
-      gap: 10px;
-      flex-shrink: 0;
-      flex-wrap: wrap;
-    }
-    .cert-modal-id {
-      font-family: var(--ff-mono);
-      font-size: 10px;
-      color: var(--text-muted);
-      letter-spacing: .06em;
-    }
-    .cert-modal-id span { color: var(--cyan); }
-    .cert-verify-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 6px 14px;
-      font-family: var(--ff-mono); font-size: 11px;
-      color: var(--bg-deep);
-      background: var(--cyan);
-      border: none; border-radius: 3px;
-      cursor: pointer; text-decoration: none;
-      box-shadow: var(--glow-soft);
-      transition: opacity var(--t1), box-shadow var(--t1);
-      font-weight: 700;
-      letter-spacing: .04em;
-    }
-    .cert-verify-btn:hover { opacity: .85; box-shadow: var(--glow); }
-
     .cert-text {
       font-size: 12px;
       color: var(--text-muted);
       line-height: 1.5;
     }
 
+    /* ==================== CERTIFICATES ==================== */
+    .cert-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+    @media (min-width: 600px) { .cert-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 900px) { .cert-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .cert-card { background: var(--bg-2); border: 1px solid var(--cyan-border); border-radius: 4px; overflow: hidden; transition: border-color var(--t1), box-shadow var(--t1); display: flex; flex-direction: column; }
+    .cert-card:hover { border-color: var(--cyan); box-shadow: var(--glow-soft); }
+    .cert-img-box { width: 100%; height: 120px; background: var(--bg-3); display: flex; align-items: center; justify-content: center; font-size: 2.8rem; color: var(--cyan); text-shadow: var(--glow); position: relative; overflow: hidden; }
+    .cert-img-box::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, var(--cyan-faint), transparent); }
+    .cert-content { padding: 12px 14px; flex: 1; }
+    .cert-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .cert-category { font-family: var(--ff-mono); font-size: 10px; color: var(--cyan-dim); text-transform: uppercase; letter-spacing: .1em; }
+    .cert-dot { width: 4px; height: 4px; background: var(--cyan); box-shadow: var(--glow-soft); flex-shrink: 0; }
+    .cert-year { font-family: var(--ff-mono); font-size: 10px; color: var(--text-muted); }
+    .cert-title { font-family: var(--ff-display); font-size: 11px; letter-spacing: .04em; color: var(--text-main); margin-bottom: 4px; line-height: 1.4; transition: color var(--t1); }
+    .cert-card:hover .cert-title { color: var(--cyan); }
+    .cert-text { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+    .cert-link { display: inline-flex; align-items: center; gap: 5px; margin: 8px 14px 12px; padding: 4px 10px; font-family: var(--ff-mono); font-size: 10px; color: var(--cyan); border: 1px solid var(--cyan-border); border-radius: 2px; transition: background var(--t1), box-shadow var(--t1); cursor: pointer; background: none; }
+    .cert-link:hover { background: var(--cyan-faint); box-shadow: var(--glow-soft); }
+    .cert-link ion-icon { font-size: 12px; }
+    /* Cert modal */
+    .cert-modal-overlay { display: none; position: fixed; inset: 0; background: hsla(222,25%,4%,.92); z-index: 10000; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(6px); }
+    .cert-modal-overlay.active { display: flex; }
+    .cert-modal-box { background: var(--bg-1); border: 1px solid var(--cyan-border); border-radius: 6px; width: min(95vw, 860px); max-height: 92vh; display: flex; flex-direction: column; box-shadow: var(--glow-soft), var(--shadow); position: relative; overflow: hidden; }
+    .cert-modal-box::before { content: ""; position: absolute; top:-1px; left:-1px; width:16px; height:16px; border-top:2px solid var(--cyan); border-left:2px solid var(--cyan); z-index:2; pointer-events:none; }
+    .cert-modal-box::after { content: ""; position: absolute; bottom:-1px; right:-1px; width:16px; height:16px; border-bottom:2px solid var(--cyan); border-right:2px solid var(--cyan); z-index:2; pointer-events:none; }
+    .cert-modal-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--cyan-border); font-family:var(--ff-mono); font-size:11px; color:var(--cyan); flex-shrink:0; gap:12px; }
+    .cert-modal-header-left { display:flex; align-items:center; gap:8px; overflow:hidden; }
+    .cert-modal-header-left ion-icon { font-size:15px; flex-shrink:0; }
+    .cert-modal-title-text { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .cert-modal-close { background:none; border:1px solid var(--cyan-border); cursor:pointer; color:var(--text-muted); font-size:18px; display:flex; align-items:center; border-radius:3px; padding:2px; transition:color var(--t1), border-color var(--t1); flex-shrink:0; }
+    .cert-modal-close:hover { color:var(--cyan); border-color:var(--cyan); box-shadow:var(--glow-soft); }
+    .cert-modal-img-wrap { flex:1; overflow-y:auto; display:flex; align-items:center; justify-content:center; padding:20px; background:var(--bg-2); position:relative; min-height:200px; }
+    .cert-modal-img { max-width:100%; max-height:60vh; border-radius:4px; border:1px solid var(--cyan-border); box-shadow:0 0 30px hsla(177,100%,50%,.12); display:block; }
+    .cert-modal-scan { position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 3px,hsla(177,100%,50%,.03) 3px,hsla(177,100%,50%,.03) 4px); pointer-events:none; }
+    .cert-modal-no-img { display:none; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:var(--text-muted); font-family:var(--ff-mono); font-size:13px; text-align:center; padding:40px; }
+    .cert-modal-no-img ion-icon { font-size:40px; color:var(--cyan); }
+    .cert-modal-footer { display:flex; align-items:center; justify-content:space-between; padding:10px 16px; border-top:1px solid var(--cyan-border); gap:10px; flex-shrink:0; flex-wrap:wrap; }
+    .cert-modal-id { font-family:var(--ff-mono); font-size:10px; color:var(--text-muted); letter-spacing:.06em; }
+    .cert-modal-id span { color:var(--cyan); }
+    .cert-verify-btn { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; font-family:var(--ff-mono); font-size:11px; color:var(--bg-deep); background:var(--cyan); border:none; border-radius:3px; cursor:pointer; text-decoration:none; box-shadow:var(--glow-soft); transition:opacity var(--t1); font-weight:700; letter-spacing:.04em; }
+    .cert-verify-btn:hover { opacity:.85; box-shadow:var(--glow); }
+
     /* ==================== CONTACT ==================== */
-    .mapbox {
       height: 260px;
       border: 1px solid var(--cyan-border);
       border-radius: 4px;
@@ -1115,6 +971,79 @@
     }
     .form-btn:disabled { opacity: .45; cursor: not-allowed; }
 
+    /* Form success / error states */
+    .form-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 40px 20px;
+      text-align: center;
+      background: var(--bg-2);
+      border: 1px solid var(--cyan-border);
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .form-success.visible { display: flex; }
+    .form-success-icon {
+      font-size: 48px;
+      color: var(--cyan);
+      text-shadow: var(--glow);
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+    .form-success-title {
+      font-family: var(--ff-mono);
+      font-size: 14px;
+      color: var(--cyan);
+      letter-spacing: .1em;
+      text-shadow: var(--glow-soft);
+    }
+    .form-success-text {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .form-reset-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border: 1px solid var(--cyan-border);
+      border-radius: 2px;
+      color: var(--cyan);
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      background: var(--cyan-faint);
+      cursor: pointer;
+      transition: all var(--t1);
+      margin-top: 6px;
+    }
+    .form-reset-btn:hover { border-color: var(--cyan); box-shadow: var(--glow-soft); }
+
+    .form-error-msg {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: hsla(0,80%,55%,.1);
+      border: 1px solid hsla(0,80%,55%,.35);
+      border-radius: 3px;
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      color: var(--danger);
+      margin-bottom: 14px;
+    }
+    .form-error-msg.visible { display: flex; }
+    .form-error-msg ion-icon { font-size: 16px; flex-shrink: 0; }
+
+    /* Sending state on button */
+    .form-btn.sending { opacity: .7; cursor: wait; }
+    .form-btn.sending span::after {
+      content: "...";
+      animation: dots 1s steps(3) infinite;
+    }
+    @keyframes dots { 0%{content:"."} 33%{content:".."} 66%{content:"..."} }
+
     /* ==================== STATUS BAR ==================== */
     .status-bar {
       display: flex;
@@ -1143,16 +1072,8 @@
   <aside class="sidebar panel">
 
     <div class="sidebar-info">
-      <figure class="avatar-wrap">
-        <div class="avatar-ring"></div>
-        <div class="avatar-box">
-          <img src="./assets/avatar-1.png" alt="Umang Raichura">
-        </div>
-        <span class="avatar-corner tl"></span>
-        <span class="avatar-corner tr"></span>
-        <span class="avatar-corner bl"></span>
-        <span class="avatar-corner br"></span>
-        <span class="avatar-status" title="Online"></span>
+      <figure class="avatar-box">
+        <img src="./assets/images/avatar-1.png" alt="Umang Raichura" style="width:100%;height:100%;object-fit:cover;display:block;">
       </figure>
       <div class="info-content">
         <h1 class="name">Umang Raichura</h1>
@@ -1173,7 +1094,7 @@
           <div class="icon-box"><ion-icon name="mail-outline"></ion-icon></div>
           <div class="contact-info">
             <p class="contact-title">Email</p>
-            <a href="/cdn-cgi/l/email-protection#41342c202f267976767401262c20282d6f222e2c" class="contact-link"><span class="__cf_email__" data-cfemail="2f5a424e41481718181a6f48424e4643014c4042">[email&#160;protected]</span></a>
+            <a href="/cdn-cgi/l/email-protection#f2879f939c95cac5c5c7b2959f939b9edc919d9f" class="contact-link"><span class="__cf_email__" data-cfemail="7c09111d121b444b4b493c1b111d1510521f1311">[email&#160;protected]</span></a>
           </div>
         </li>
         <li class="contact-item">
@@ -1418,29 +1339,61 @@
         </ol>
       </section>
 
-      <!-- Software Skills -->
+      <!-- Cyber Security Tools -->
       <section class="skills-section">
-        <div class="section-label">Software Skills</div>
-        <div class="skills-grid">
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Python</span><span class="skill-pct">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div></div>
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Adobe Photoshop</span><span class="skill-pct">90%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:90%"></div></div></div>
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Adobe Illustrator</span><span class="skill-pct">70%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div></div>
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Pandas</span><span class="skill-pct">75%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:75%"></div></div></div>
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Linux</span><span class="skill-pct">65%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:65%"></div></div></div>
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">R Programming</span><span class="skill-pct">60%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:60%"></div></div></div>
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Power BI</span><span class="skill-pct">50%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:50%"></div></div></div>
+        <div class="section-label">Cyber Security</div>
+        <div class="tool-tags">
+          <span class="tool-tag highlight">Wazuh SIEM</span>
+          <span class="tool-tag highlight">Burp Suite</span>
+          <span class="tool-tag highlight">Nmap</span>
+          <span class="tool-tag highlight">Wireshark</span>
+          <span class="tool-tag highlight">OWASP ZAP</span>
+          <span class="tool-tag">Firewall</span>
+          <span class="tool-tag">WAF</span>
+          <span class="tool-tag">OS Hardening</span>
+          <span class="tool-tag">TLS/Cipher Suites</span>
+          <span class="tool-tag">Access Control</span>
+          <span class="tool-tag">Network Security</span>
+          <span class="tool-tag">Compliance Mgmt</span>
+          <span class="tool-tag">VAPT</span>
+          <span class="tool-tag">Threat Intelligence</span>
+          <span class="tool-tag">Incident Response</span>
         </div>
       </section>
 
-      <!-- Soft Skills -->
+      <!-- DevSecOps -->
       <section class="skills-section">
-        <div class="section-label">Soft Skills</div>
-        <div class="skills-grid">
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Leadership</span><span class="skill-pct">85%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%"></div></div></div>
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Adaptability</span><span class="skill-pct">90%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:90%"></div></div></div>
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Problem-Solving</span><span class="skill-pct">70%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div></div>
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Continuous Learning</span><span class="skill-pct">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div></div>
-          <div class="skill-item"><div class="skill-header"><span class="skill-name">Ethical & Responsible</span><span class="skill-pct">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+        <div class="section-label">DevSecOps / Cloud</div>
+        <div class="tool-tags">
+          <span class="tool-tag highlight">CI/CD Pipelines</span>
+          <span class="tool-tag highlight">SonarQube (SAST)</span>
+          <span class="tool-tag highlight">SBOM / SCA</span>
+          <span class="tool-tag highlight">Docker</span>
+          <span class="tool-tag">DAST</span>
+          <span class="tool-tag">CBOM</span>
+          <span class="tool-tag">Container Security</span>
+          <span class="tool-tag">Supply Chain Risk</span>
+          <span class="tool-tag">GitHub Actions</span>
+          <span class="tool-tag">Linux</span>
+          <span class="tool-tag">Windows</span>
+          <span class="tool-tag">Scripting</span>
+        </div>
+      </section>
+
+      <!-- Programming & Data -->
+      <section class="skills-section">
+        <div class="section-label">Programming &amp; Data</div>
+        <div class="tool-tags">
+          <span class="tool-tag highlight">Python</span>
+          <span class="tool-tag highlight">SQL</span>
+          <span class="tool-tag">R</span>
+          <span class="tool-tag">HTML / CSS</span>
+          <span class="tool-tag">Pandas</span>
+          <span class="tool-tag">Sk-learn</span>
+          <span class="tool-tag">Machine Learning</span>
+          <span class="tool-tag">Power BI</span>
+          <span class="tool-tag">Statistical Analysis</span>
+          <span class="tool-tag">Excel</span>
         </div>
       </section>
 
@@ -1465,7 +1418,6 @@
 
       <div class="cert-grid">
 
-        <!-- 1. Foundations of Cybersecurity — Google -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="shield-checkmark-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1473,12 +1425,9 @@
             <h3 class="cert-title">Foundations of Cybersecurity</h3>
             <p class="cert-text">Google — Coursera</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Foundations of Cybersecurity — Google','coursera','Y3HFZBLRM8UQ','https://www.coursera.org/verify/Y3HFZBLRM8UQ')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Foundations of Cybersecurity — Google','coursera','Y3HFZBLRM8UQ','https://www.coursera.org/verify/Y3HFZBLRM8UQ')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 2. Play It Safe: Manage Security Risks — Google -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="warning-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1486,12 +1435,9 @@
             <h3 class="cert-title">Play It Safe: Manage Security Risks</h3>
             <p class="cert-text">Google — Coursera</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Play It Safe: Manage Security Risks — Google','coursera','T2GQJP766AWC','https://www.coursera.org/verify/T2GQJP766AWC')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Play It Safe: Manage Security Risks — Google','coursera','T2GQJP766AWC','https://www.coursera.org/verify/T2GQJP766AWC')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 3. Connect and Protect: Networks — Google -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="globe-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1499,12 +1445,9 @@
             <h3 class="cert-title">Connect and Protect: Networks and Network Security</h3>
             <p class="cert-text">Google — Coursera</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Connect and Protect: Networks — Google','coursera','AO11ZJQVS5YS','https://www.coursera.org/verify/AO11ZJQVS5YS')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Connect and Protect: Networks — Google','coursera','AO11ZJQVS5YS','https://www.coursera.org/verify/AO11ZJQVS5YS')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 4. Tools of the Trade: Linux and SQL — Google -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="terminal-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1512,25 +1455,19 @@
             <h3 class="cert-title">Tools of the Trade: Linux and SQL</h3>
             <p class="cert-text">Google — Coursera</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Tools of the Trade: Linux and SQL — Google','coursera','1d0bc23dce685e7e342a4c211c1c8619','https://www.coursera.org/verify/1d0bc23dce685e7e342a4c211c1c8619')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Tools of the Trade: Linux and SQL — Google','coursera','1d0bc23dce685e7e342a4c211c1c8619','https://www.coursera.org/verify/1d0bc23dce685e7e342a4c211c1c8619')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 5. Fortinet Certified Associate in Cybersecurity -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="ribbon-outline"></ion-icon></div>
           <div class="cert-content">
             <div class="cert-meta"><span class="cert-category">Cybersecurity</span><div class="cert-dot"></div><span class="cert-year">Aug 2024</span></div>
             <h3 class="cert-title">Certified Associate in Cybersecurity</h3>
-            <p class="cert-text">Fortinet · ID: 3012301294UR</p>
+            <p class="cert-text">Fortinet · Expires Aug 2026</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Fortinet Certified Associate in Cybersecurity','direct','3012301294UR','https://www.fortinet.com/training/cybersecurity-professionals','','Expires Aug 2026')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Fortinet Certified Associate in Cybersecurity','direct','','https://www.fortinet.com/training/cybersecurity-professionals','3012301294UR')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 6. CCCourse Conclusion — ISC2 -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="lock-closed-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1538,12 +1475,9 @@
             <h3 class="cert-title">CC Course Conclusion &amp; Final Assessment</h3>
             <p class="cert-text">ISC2 · Expires Oct 2027</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('CC Course Conclusion & Final Assessment — ISC2','direct','e761fc61-520f-40b5-9d91-85f0e7da38c9','https://www.isc2.org/','','Expires Oct 2027')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('CC Course Conclusion — ISC2','direct','','https://www.isc2.org/','e761fc61-520f-40b5-9d91-85f0e7da38c9')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 7. Career Essentials in Cybersecurity — Microsoft & LinkedIn -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="briefcase-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1551,12 +1485,9 @@
             <h3 class="cert-title">Career Essentials in Cybersecurity</h3>
             <p class="cert-text">Microsoft &amp; LinkedIn</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Career Essentials in Cybersecurity — Microsoft & LinkedIn','direct','ef213c15af15f86c4359d1f5f80bd49b00adee9d73f272c85b4fe8c5f54cbcad','https://www.linkedin.com/learning/certificates/ef213c15af15f86c4359d1f5f80bd49b00adee9d73f272c85b4fe8c5f54cbcad')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Career Essentials in Cybersecurity — Microsoft &amp; LinkedIn','direct','','https://www.linkedin.com/learning/certificates/ef213c15af15f86c4359d1f5f80bd49b00adee9d73f272c85b4fe8c5f54cbcad','ef213c15...cbcad')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 8. Microsoft Copilot for Security — LinkedIn -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="sparkles-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1564,12 +1495,9 @@
             <h3 class="cert-title">Microsoft Copilot for Security</h3>
             <p class="cert-text">LinkedIn Learning</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Microsoft Copilot for Security — LinkedIn','direct','','https://www.linkedin.com/learning/')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Microsoft Copilot for Security — LinkedIn','direct','','https://www.linkedin.com/learning/')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 9. Cybersecurity Awareness: Terminology — LinkedIn -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="megaphone-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1577,12 +1505,9 @@
             <h3 class="cert-title">Cybersecurity Awareness: Terminology</h3>
             <p class="cert-text">LinkedIn Learning</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Cybersecurity Awareness: Terminology — LinkedIn','direct','','https://www.linkedin.com/learning/')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Cybersecurity Awareness: Terminology — LinkedIn','direct','','https://www.linkedin.com/learning/')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 10. Cybersecurity Foundations — LinkedIn -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="shield-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1590,12 +1515,9 @@
             <h3 class="cert-title">Cybersecurity Foundations</h3>
             <p class="cert-text">LinkedIn Learning</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Cybersecurity Foundations — LinkedIn','direct','','https://www.linkedin.com/learning/')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Cybersecurity Foundations — LinkedIn','direct','','https://www.linkedin.com/learning/')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 11. The Cybersecurity Threat Landscape — LinkedIn -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="scan-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1603,12 +1525,9 @@
             <h3 class="cert-title">The Cybersecurity Threat Landscape</h3>
             <p class="cert-text">LinkedIn Learning</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('The Cybersecurity Threat Landscape — LinkedIn','direct','','https://www.linkedin.com/learning/')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('The Cybersecurity Threat Landscape — LinkedIn','direct','','https://www.linkedin.com/learning/')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 12. SQL Injection Attacks — EC-Council -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="code-slash-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1616,12 +1535,9 @@
             <h3 class="cert-title">SQL Injection Attacks</h3>
             <p class="cert-text">EC-Council</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('SQL Injection Attacks — EC-Council','direct','','https://www.eccouncil.org/')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('SQL Injection Attacks — EC-Council','direct','','https://www.eccouncil.org/')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 13. Cybersecurity for Businesses — EC-Council -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="business-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1629,12 +1545,9 @@
             <h3 class="cert-title">Cybersecurity for Businesses — Fundamental</h3>
             <p class="cert-text">EC-Council</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Cybersecurity for Businesses — EC-Council','direct','','https://www.eccouncil.org/')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Cybersecurity for Businesses — EC-Council','direct','','https://www.eccouncil.org/')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 14. Introduction to Cybersecurity — Cisco -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="wifi-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1642,12 +1555,9 @@
             <h3 class="cert-title">Introduction to Cybersecurity</h3>
             <p class="cert-text">Cisco Networking Academy</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Introduction to Cybersecurity — Cisco','direct','','https://www.netacad.com/')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Introduction to Cybersecurity — Cisco','direct','','https://www.netacad.com/')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
-        <!-- 15. Securing API Servers — APIsec University (Credly) -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="git-network-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1655,12 +1565,9 @@
             <h3 class="cert-title">Securing API Servers (2 hours)</h3>
             <p class="cert-text">APIsec University — Credly</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Securing API Servers — APIsec University','credly','https://images.credly.com/size/680x680/images/71296528-e07b-44af-b5cd-7723599793cf/image.png','https://www.credly.com/badges/20fd2620-f23b-4d84-8b07-9eb87739f77e/public_url','20fd2620-f23b-4d84-8b07-9eb87739f77e')">
-            <ion-icon name="open-outline"></ion-icon> View Badge
-          </button>
+          <button class="cert-link" onclick="openCertModal('Securing API Servers — APIsec University','credly','https://images.credly.com/size/680x680/images/71296528-e07b-44af-b5cd-7723599793cf/image.png','https://www.credly.com/badges/20fd2620-f23b-4d84-8b07-9eb87739f77e/public_url','20fd2620...')"><ion-icon name="open-outline"></ion-icon> View Badge</button>
         </div>
 
-        <!-- 16. APIsec Certified Practitioner — APIsec University (Credly) -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="shield-half-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1668,12 +1575,9 @@
             <h3 class="cert-title">APIsec Certified Practitioner</h3>
             <p class="cert-text">APIsec University — Credly</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('APIsec Certified Practitioner — APIsec University','credly','https://images.credly.com/size/680x680/images/df07f8b6-b954-41f7-9a79-db5cbbe6e7c4/image.png','https://www.credly.com/badges/12e49d8f-4f5a-425b-9d1c-7e831df25991/public_url','12e49d8f-4f5a-425b-9d1c-7e831df25991')">
-            <ion-icon name="open-outline"></ion-icon> View Badge
-          </button>
+          <button class="cert-link" onclick="openCertModal('APIsec Certified Practitioner — APIsec University','credly','https://images.credly.com/size/680x680/images/df07f8b6-b954-41f7-9a79-db5cbbe6e7c4/image.png','https://www.credly.com/badges/12e49d8f-4f5a-425b-9d1c-7e831df25991/public_url','12e49d8f...')"><ion-icon name="open-outline"></ion-icon> View Badge</button>
         </div>
 
-        <!-- 17. API Security Fundamentals — APIsec University -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="key-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1681,12 +1585,9 @@
             <h3 class="cert-title">API Security Fundamentals '25</h3>
             <p class="cert-text">APIsec University — Credly</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('API Security Fundamentals — APIsec University','direct','','https://www.apisecuniversity.com/')">
-            <ion-icon name="open-outline"></ion-icon> View Badge
-          </button>
+          <button class="cert-link" onclick="openCertModal('API Security Fundamentals — APIsec University','direct','','https://www.apisecuniversity.com/')"><ion-icon name="open-outline"></ion-icon> View Badge</button>
         </div>
 
-        <!-- 18. Introduction to Ethical Hacking — Great Learning -->
         <div class="cert-card">
           <div class="cert-img-box"><ion-icon name="skull-outline"></ion-icon></div>
           <div class="cert-content">
@@ -1694,9 +1595,7 @@
             <h3 class="cert-title">Introduction to Ethical Hacking</h3>
             <p class="cert-text">Great Learning</p>
           </div>
-          <button class="cert-link" onclick="openCertModal('Introduction to Ethical Hacking — Great Learning','direct','','https://www.mygreatlearning.com/')">
-            <ion-icon name="open-outline"></ion-icon> View Certificate
-          </button>
+          <button class="cert-link" onclick="openCertModal('Introduction to Ethical Hacking — Great Learning','direct','','https://www.mygreatlearning.com/')"><ion-icon name="open-outline"></ion-icon> View Certificate</button>
         </div>
 
       </div><!-- .cert-grid -->
@@ -1705,18 +1604,14 @@
     <!-- ===== CERTIFICATE IMAGE MODAL ===== -->
     <div class="cert-modal-overlay" id="certModal">
       <div class="cert-modal-box">
-
         <div class="cert-modal-header">
           <div class="cert-modal-header-left">
             <ion-icon name="ribbon-outline"></ion-icon>
             <span class="cert-modal-title-text" id="certModalTitle">Certificate</span>
           </div>
-          <button class="cert-modal-close" onclick="closeCertModal()">
-            <ion-icon name="close-outline"></ion-icon>
-          </button>
+          <button class="cert-modal-close" onclick="closeCertModal()"><ion-icon name="close-outline"></ion-icon></button>
         </div>
-
-        <div class="cert-modal-img-wrap" id="certModalImgWrap">
+        <div class="cert-modal-img-wrap">
           <div class="cert-modal-scan"></div>
           <img class="cert-modal-img" id="certModalImg" src="" alt="Certificate">
           <div class="cert-modal-no-img" id="certModalNoImg">
@@ -1724,14 +1619,12 @@
             <p>No preview available.<br>Click Verify below to view online.</p>
           </div>
         </div>
-
         <div class="cert-modal-footer">
           <span class="cert-modal-id">CERT-ID: <span id="certModalId">—</span></span>
           <a class="cert-verify-btn" id="certVerifyBtn" href="#" target="_blank" rel="noopener">
             <ion-icon name="shield-checkmark-outline"></ion-icon> Verify Certificate
           </a>
         </div>
-
       </div>
     </div>
 
@@ -1751,12 +1644,33 @@
 
       <section class="contact-form">
         <h3 class="h3 form-title">Send a Message</h3>
-        <form data-form>
+
+        <!-- SUCCESS STATE -->
+        <div class="form-success" id="formSuccess">
+          <div class="form-success-icon"><ion-icon name="checkmark-circle-outline"></ion-icon></div>
+          <p class="form-success-title">// MESSAGE_TRANSMITTED</p>
+          <p class="form-success-text">Signal received. I'll get back to you ASAP.</p>
+          <button class="form-reset-btn" onclick="resetForm()">
+            <ion-icon name="refresh-outline"></ion-icon> Send Another
+          </button>
+        </div>
+
+        <!-- ERROR STATE -->
+        <div class="form-error-msg" id="formError">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          <span>Transmission failed. Please try again or email directly.</span>
+        </div>
+
+        <form id="contactForm" action="https://formspree.io/f/xwvrkzko" method="POST">
+          <!-- Honeypot anti-spam -->
+          <input type="text" name="_gotcha" style="display:none">
+          <input type="hidden" name="_subject" value="New message from portfolio — Umang Raichura">
+
           <div class="input-row">
-            <input type="text" class="form-input" placeholder="Full name" required data-form-input>
-            <input type="email" class="form-input" placeholder="Email address" required data-form-input>
+            <input type="text" name="name" class="form-input" placeholder="Full name" required data-form-input>
+            <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
           </div>
-          <textarea class="form-input" placeholder="Your message..." required data-form-input></textarea>
+          <textarea name="message" class="form-input" placeholder="Your message..." required data-form-input></textarea>
           <button class="form-btn" type="submit" disabled data-form-btn>
             <ion-icon name="paper-plane-outline"></ion-icon>
             <span>Send Message</span>
@@ -1822,10 +1736,14 @@
     el.addEventListener('click', () => modal.classList.remove('active'));
   });
 
-  // ── FORM VALIDATION ──
-  const formInputs = document.querySelectorAll('[data-form-input]');
-  const formBtn    = document.querySelector('[data-form-btn]');
+  // ── FORM — FORMSPREE ASYNC SUBMIT ──
+  const contactForm  = document.getElementById('contactForm');
+  const formSuccess  = document.getElementById('formSuccess');
+  const formError    = document.getElementById('formError');
+  const formInputs   = document.querySelectorAll('[data-form-input]');
+  const formBtn      = document.querySelector('[data-form-btn]');
 
+  // Enable button only when all fields filled
   if (formInputs.length && formBtn) {
     formInputs.forEach(input => {
       input.addEventListener('input', () => {
@@ -1834,14 +1752,51 @@
     });
   }
 
-  // ── CERTIFICATE IMAGE MODAL ──
-  // openCertModal(title, type, imgOrId, verifyUrl, badgeId, extra)
-  // type = 'coursera' | 'credly' | 'direct'
-  // coursera: imgOrId = cert ID, auto-builds S3 image URL
-  // credly:   imgOrId = full images.credly.com URL
-  // direct:   imgOrId = '' (no image, show fallback) or full image URL
+  if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-  function openCertModal(title, type, imgOrId, verifyUrl, badgeId, extra) {
+      // Sending state
+      formBtn.classList.add('sending');
+      formBtn.disabled = true;
+      formBtn.querySelector('span').textContent = 'Transmitting';
+      formError.classList.remove('visible');
+
+      try {
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          // Show success, hide form
+          contactForm.style.display = 'none';
+          formSuccess.classList.add('visible');
+        } else {
+          throw new Error('Server error');
+        }
+      } catch (err) {
+        // Show error, re-enable button
+        formError.classList.add('visible');
+        formBtn.classList.remove('sending');
+        formBtn.disabled = false;
+        formBtn.querySelector('span').textContent = 'Send Message';
+      }
+    });
+  }
+
+  function resetForm() {
+    contactForm.reset();
+    contactForm.style.display = 'block';
+    formSuccess.classList.remove('visible');
+    formError.classList.remove('visible');
+    formBtn.disabled = true;
+    formBtn.querySelector('span').textContent = 'Send Message';
+  }
+
+  // ── CERTIFICATE IMAGE MODAL ──
+  function openCertModal(title, type, imgOrId, verifyUrl, badgeId) {
     const overlay   = document.getElementById('certModal');
     const titleEl   = document.getElementById('certModalTitle');
     const img       = document.getElementById('certModalImg');
@@ -1853,19 +1808,15 @@
     verifyBtn.href = verifyUrl || '#';
 
     let imgSrc = '';
-    let displayId = '—';
+    let displayId = badgeId || '—';
 
     if (type === 'coursera' && imgOrId) {
       imgSrc = `https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE~${imgOrId}/CERTIFICATE_LANDING_PAGE~${imgOrId}.jpeg`;
       displayId = imgOrId;
     } else if (type === 'credly' && imgOrId) {
       imgSrc = imgOrId;
-      displayId = badgeId || '—';
-    } else if (type === 'direct' && imgOrId) {
+    } else if (type === 'direct' && imgOrId && imgOrId.startsWith('http')) {
       imgSrc = imgOrId;
-      displayId = badgeId || imgOrId.substring(0, 32) + '…';
-    } else {
-      displayId = badgeId || imgOrId || '—';
     }
 
     certIdEl.textContent = displayId;
@@ -1874,10 +1825,7 @@
       img.src = imgSrc;
       img.style.display = 'block';
       noImg.style.display = 'none';
-      img.onerror = function() {
-        img.style.display = 'none';
-        noImg.style.display = 'flex';
-      };
+      img.onerror = function() { img.style.display = 'none'; noImg.style.display = 'flex'; };
     } else {
       img.src = '';
       img.style.display = 'none';
